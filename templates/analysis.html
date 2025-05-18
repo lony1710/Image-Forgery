@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Image Authentix</title>
+  <style>
+
+
+/* CSS Variables */
+*{
+    /*for fixed no scrolling*/
+    overflow: hidden;
+    overflow-y: auto;
+    
+  }
+  :root {
+    --sidebar-width: 280px;
+    --sidebar-bg: #f9f9fb;
+    --primary-color: #6366f1;
+    --text-dark: #111827;
+    --text-medium: #374151;
+    --text-light: #6b7280;
+    --hover-bg: #ececf0;
+    --transition: all 0.3s ease;
+  }
+  
+  /* Base Styles */
+  body {
+    letter-spacing: 0.05rem;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+  }
+  
+  .container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* Sidebar - Base Structure */
+  .sidebar {
+    
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #eaeaea;
+    padding: 0.5rem;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: var(--transition);
+  }
+  
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #f5f4f7;
+    border-radius: 3px;
+  }
+  
+  /* User Info Section */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  #profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .profile-name {
+    color: var(--text-dark);
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  
+  /* Menu Items Common Styles */
+  .menu-header,
+  .menu-item,
+  .logout-button {
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+  }
+  
+  .menu-header {
+    margin: 10px;
+    font-size: 1.35rem;
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    justify-content: flex-start;
+  }
+  
+  .menu-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-medium);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin: 5px 0 5px 12px;
+    text-decoration: none;
+  }
+  
+  .menu-item .material-icons {
+    font-size: 1.6rem;
+    margin-right: 12px;
+    color: #9ca3af;
+  }
+  
+  /* Interactive States */
+  .menu-item:hover,
+  .logout-button:hover {
+    background-color: var(--hover-bg);
+  }
+  
+  .menu-item.active {
+    background-color: var(--hover-bg);
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+  
+  .menu-item.active .material-icons {
+    color: var(--primary-color);
+  }
+  
+  /* Badge & Section Titles */
+  .badge {
+    font-size: 0.75rem;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    margin-left: auto;
+  }
+  
+  .section-title {
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+    padding: 0.5rem 1rem;
+    
+  }
+  
+  /* Logout Button */
+  .logout-button {
+    justify-content: center;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin: 35px 0 0 0.5rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .logout-button .material-icons {
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+  
+  /* Collapsed State */
+  .sidebar.collapsed {
+    width: 64px;
+  }
+  
+  /*.sidebar.collapsed .user-info,
+  .sidebar.collapsed .sidebar-menu,
+  .sidebar.collapsed .logout-button,
+  .sidebar.collapsed .section-title {
+    display: none;
+  }*/
+  
+  .sidebar.collapsed .menu-header {
+    justify-content: center;
+    margin: 0;
+  }
+  
+  .sidebar.collapsed .menu-header .material-icons {
+    margin-right: 0;
+    transform: rotate(180deg);
+  }
+  
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+  }
+  
+  .main-content h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .main-content p {
+    color: #4b5563;
+    margin-top: 0.5rem;
+  }
+  
+  
+  /*optimized  1*/
+  
+  .sidebar {
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .main-content {
+    transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  :root {
+    --collapsed-width: 80px;
+    --expanded-width: 280px;
+  }
+  
+  .sidebar { width: var(--expanded-width); }
+  .sidebar.collapsed { width: var(--collapsed-width); }
+  
+  .main-content { margin-left: var(--expanded-width); }
+  .sidebar.collapsed ~ .main-content { margin-left: var(--collapsed-width); }
+  
+  /*update 2 */
+  /* Hide text in user info but keep the profile picture */
+  .sidebar.collapsed .user-info div {
+    display: none;
+  }
+  
+  /* In each menu item, hide everything except the icon*/ 
+  .sidebar.collapsed .menu-item span:not(.material-icons) {
+    display: none;
+  }
+  
+  
+  /* For the logout button, hide the text and show only the icon */
+  .sidebar.collapsed .logout-button span:not(.material-icons) {
+    display: none;
+  }
+  
+  /* Optionally, hide section titles in collapsed mode */
+  .sidebar.collapsed .section-title {
+    display: none;
+  }
+  
+  
+  /*updated 3 integration*/
+  
+  .header {
+   
+    padding: 1rem 2rem;
+    position: relative;
+    z-index: 40;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Main content adjustment */
+  .main-content {
+    position: relative;
+    /*margin-left: var(--sidebar-width);*/
+    margin: 0;
+    transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Header positioning */
+  .main-content .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0;
+  }
+  
+  /* Collapsed state */
+  .sidebar.collapsed ~ .main-content {
+    /*margin-left: var(--collapsed-width);*/
+    margin: 0;
+  }
+  
+  /* Logo styling */
+  .logo h1 {
+    color: rgb(0, 0, 0);
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .logo h1::before {
+    
+    font-size: 1.4rem;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* Zero-gap integration */
+  .container1{
+    overflow: hidden;
+  }
+  
+  .sidebar {
+    z-index: 50;
+  }
+  
+  .header {
+    z-index: 40;
+  }
+  
+  
+  
+  
+  /*updated 4 upload and main */
+  
+  
+  :root {
+    --primary: #4e73df;
+    --secondary: #1cc88a;
+    --error: #e74a3b;
+    --background: #ffffff;
+    --surface: #f8f9fc;
+    --border: #d1d3e2;
+    --text-primary: #343a40;
+    --text-secondary: #6c757d;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    --sidebar-gradient: linear-gradient(135deg, #4e73df, #1cc88a);
+  }
+  
+   /* Global Styles */
+  
+  
+  
+  .container2{
+    max-width: 1500px;
+    margin: 20px auto;
+    padding: 2rem 1.5rem;
+  }
+  
+      /* Content Area */
+      .content {
+        width: 100%;
+      }
+      .dashboard {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: var(--background);
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+      .dashboard::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--sidebar-gradient);
+      }
+  
+      /* Upload Section */
+      .upload-section {
+        padding: 1.5rem;
+      }
+      .drop-zone {
+        border: 2px dashed var(--border);
+        border-radius: 1rem;
+        padding: 3rem 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        background: var(--background);
+        margin: 1.5rem 0;
+      }
+      .drop-zone:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow);
+      }
+      .preview-container {
+        margin: 1.5rem 0;
+        border-radius: 1rem;
+        overflow: hidden;
+        position: relative;
+        min-height: 200px;
+        background: var(--surface);
+      }
+      #imagePreview {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        display: none;
+      }
+      .file-info {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 2rem 0;
+      }
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Analysis Results */
+      .analysis-results {
+        padding: 1.5rem;
+        border-left: 1px solid var(--border);
+        position: relative;
+      }
+      .result-card {
+        background: var(--background);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow);
+      }
+      .result-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .status-indicator {
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+      }
+      .status-text {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+      }
+      .authentic { color: var(--secondary); }
+      .authentic .status-indicator { background: var(--secondary); }
+      .forged { color: var(--error); }
+      .forged .status-indicator { background: var(--error); }
+      .metrics-content { display: block; }
+      .skeleton-metrics { display: none; }
+      .metric {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .metric:last-child { border-bottom: none; }
+      .metric-label { color: var(--text-secondary); font-size: 0.875rem; }
+      .metric-value { font-weight: 600; color: var(--text-primary); font-feature-settings: 'tnum'; }
+      
+      button {
+        background: var(--sidebar-gradient);
+        color: #fff;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+      
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--background);
+        color: var(--text-primary);
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow);
+        display: none;
+        align-items: center;
+        gap: 0.75rem;
+        border-left: 4px solid var(--primary);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .toast.visible { transform: translateY(0); opacity: 1; }
+      
+      /* Detailed Analysis Section */
+      .detailed-analysis {
+        display: none; /* Hidden by default */
+      }
+      .detailed-analysis h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+      .detailed-card {
+        background: var(--background);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+      .analysis-image-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem;
+      }
+      .analysis-image-container img {
+        width: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .highlight-region {
+        position: absolute;
+        top: 30%; /* Adjust as needed */
+        left: 30%; /* Adjust as needed */
+        width: 20%; /* Adjust as needed */
+        height: 20%; /* Adjust as needed */
+        border: 3px solid var(--error);
+        background: rgba(231, 76, 60, 0.2);
+        pointer-events: none;
+      }
+      
+      @media (max-width: 768px) {
+        .main-layout { grid-template-columns: 1fr; }
+        .dashboard { grid-template-columns: 1fr; padding: 1.5rem; }
+        .analysis-results { border-left: none; border-top: 1px solid var(--border); padding-top: 2rem; }
+        .sidebar { width: 100%; margin-bottom: 2rem; }
+      }
+  
+      .sidebar.collapsed {
+        width: 60px;
+      }
+      
+  
+  /*updated 5 scroll*/
+  
+  
+
+
+  </style>
+</head>
+<body>
+  
+    
+    <main class="main-content">
+      <div class="container1">
+        <header class="header">
+          <div class="logo"><h1>Image Authentix</h1></div>
+        </header>
+      </div>
+      <div class="container2">
+        <section class="content">
+          <div class="dashboard">
+            <div class="upload-section">
+              <div class="drop-zone" id="dropZone">
+                <div style="margin-bottom: 1rem; font-size: 1.5rem; font-weight: 600;">Drag & Drop Image</div>
+                <div class="file-info">Max file size: 25MB • Formats: JPEG, PNG, WEBP</div>
+              </div>
+              <input type="file" id="fileInput" hidden accept="image/*">
+              <div class="preview-container">
+                <img id="imagePreview" alt="Image preview">
+              </div>
+              <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Forensic Analysis in Progress...</div>
+              </div>
+              <button onclick="analyzeImage()" id="analyzeBtn">Initiate Deep Scan</button>
+            </div>
+            <div class="analysis-results">
+              <div class="result-card" id="resultCard">
+                <div class="result-header">
+                  <div class="status-indicator"></div>
+                  <div class="status-text" id="statusText">Awaiting Analysis</div>
+                </div>
+                <div id="metricsContent" class="metrics-content">
+                  <div class="metric"><span class="metric-label">Confidence Level</span><span class="metric-value" id="confidenceValue">-</span></div>
+                  <div class="metric"><span class="metric-label">ELA Variance</span><span class="metric-value" id="elaValue">-</span></div>
+                  <div class="metric"><span class="metric-label">Noise Consistency</span><span class="metric-value" id="noiseValue">-</span></div>
+                  <div class="metric"><span class="metric-label">Metadata Details</span><span class="metric-value" id="metadataValue">-</span></div>
+                </div>
+              </div>
+              <div class="detailed-analysis" id="detailedAnalysis">
+                <h2>Detailed Analysis</h2>
+                <div class="detailed-card">
+                  <div class="analysis-image-container">
+                    <img id="detailedImage" src="" alt="Detailed Analysis Image">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <ul id="metadataValue"></ul>
+
+  <!--<img id="highlighted_image" src="" alt="Highlighted Image" style="max-width: 100%; max-height: 400px; display: none;" /> -->
+  <script>
+    
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const statusText = document.getElementById('statusText');
+    const confidenceValue = document.getElementById('confidenceValue');
+    const elaValue = document.getElementById('elaValue');
+    const noiseValue = document.getElementById('noiseValue');
+    const metadataValue = document.getElementById('metadataValue');
+    const formData = new FormData();
+  
+
+formData.append("file", fileInput.files[0]);
+
+const loading = document.getElementById('loading');
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', handleFileSelect);
+    
+    function handleFileSelect(event) {
+  const file = event.target.files[0];
+  
+  if (file && ['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      imagePreview.src = e.target.result;
+      imagePreview.style.display = 'block';
+
+      // Reset analysis results when a new image is uploaded
+      statusText.textContent = 'Awaiting Analysis';
+      confidenceValue.textContent = '-';
+      elaValue.textContent = '-';
+      noiseValue.textContent = '-';
+      metadataValue.innerHTML = '';
+       
+    };
+    reader.readAsDataURL(file);
+  } else {
+    alert("Invalid file format. Please upload a JPEG, PNG, or WEBP image.");
+  }
+}
+console.log("Before saving, localStorage history:", localStorage.getItem("analysisHistory"));
+function analyzeImage() {
+  console.log("Analyze Image function triggered");
+
+  if (!imagePreview.src) {
+    alert('Please upload an image first!');
+    return;
+  }
+  const file = fileInput.files[0];
+  const originalFileName = file ? file.name : "Unknown Image";
+  // Reset UI elements to default state
+  statusText.textContent = 'Awaiting Analysis';
+  confidenceValue.textContent = '-';
+  elaValue.textContent = '-';
+  noiseValue.textContent = '-';
+  metadataValue.innerHTML = ''; // Clear metadata list
+  analyzeBtn.disabled = true;
+  loading.style.display = 'block';
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  fetch("/analyze", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => {
+    console.log('Response status:', response.status);
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Parsed response data:', data);
+
+    analyzeBtn.disabled = false;
+    loading.style.display = 'none'; 
+
+    if (data && data.class_label) {
+      // Update basic analysis results
+      statusText.textContent = data.class_label;
+      confidenceValue.textContent = data.confidence;
+      elaValue.textContent = data.ela_variance;
+      noiseValue.textContent = data.noise_consistency;
+
+      // Clear the metadata value first
+      metadataValue.innerHTML = '';
+
+      // Split metadata into lines and display each line as a separate element
+      if (data.metadata) {
+        const metadataLines = data.metadata.split('\n');
+        metadataLines.forEach(line => {
+          if (line.trim() !== '') {
+            const listItem = document.createElement('li');
+            listItem.textContent = line.trim();
+            metadataValue.appendChild(listItem);
+          }
+        });
+      }
+
+      // Update the highlighted image if available
+      if (data.image) {
+        const imageUrl = `${data.image}?t=${new Date().getTime()}`;
+        imagePreview.src = imageUrl;
+      }
+    } else {
+      alert("Invalid response data received from server.");
+    }
+
+    
+    saveAnalysisResult(originalFileName, data.class_label, data.metadata, data.confidence);
+    // Reset file input after analysis
+     fileInput.value = '';
+  })
+ 
+  .catch(error => {
+    console.error('Error during analysis:', error);
+    alert("Analysis failed. Please try again.");
+    analyzeBtn.disabled = false;
+    loading.style.display = 'none'; 
+  });
+}
+
+
+function saveAnalysisResult(image, result, metadata, confidence) {
+    console.log("Saving analysis result...", confidence);
+
+    let history = JSON.parse(localStorage.getItem("analysisHistory")) || [];
+    
+    let newEntry = {
+        image: image,
+        result: result || "Unknown",
+        confidence: confidence ? parseFloat(confidence).toFixed(2) : "N/A", // Ensure it's a valid number
+        metadata: metadata || "No metadata available",
+        timestamp: new Date().toLocaleString()
+    };
+
+    history.push(newEntry);
+    localStorage.setItem("analysisHistory", JSON.stringify(history));
+
+    console.log("Updated history:", JSON.parse(localStorage.getItem("analysisHistory")));
+}
+
+  console.log("After saving, localStorage history:", localStorage.getItem("analysisHistory"));
+
+
+
+
+
+
+  </script>
+</body>
+</html>
